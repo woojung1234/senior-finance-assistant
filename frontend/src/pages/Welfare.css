@@ -1,0 +1,193 @@
+.welfare-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.welfare-container h1 {
+  margin-bottom: 20px;
+  color: #2D3748;
+}
+
+/* 음성 검색 버튼 */
+.voice-search-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #3182CE;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.voice-search-button svg {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.voice-search-button:hover {
+  background-color: #2B6CB0;
+}
+
+.voice-search-button.listening {
+  background-color: #E53E3E;
+  animation: pulse 1.5s infinite;
+}
+
+/* 검색 및 필터 */
+.welfare-search {
+  margin-bottom: 30px;
+}
+
+.search-input {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.search-input svg {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #718096;
+  font-size: 1.2rem;
+}
+
+.search-input input {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border: 1px solid #CBD5E0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input input:focus {
+  outline: none;
+  border-color: #3182CE;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+}
+
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.category-button {
+  padding: 8px 15px;
+  background-color: #E2E8F0;
+  color: #4A5568;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-button:hover {
+  background-color: #CBD5E0;
+}
+
+.category-button.active {
+  background-color: #3182CE;
+  color: white;
+}
+
+/* 추천 복지 서비스 */
+.welfare-recommendations {
+  background-color: #EBF8FF;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.welfare-recommendations h2 {
+  color: #2B6CB0;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.welfare-recommendations h2 svg {
+  margin-right: 10px;
+  color: #E53E3E;
+}
+
+.recommendations-content {
+  line-height: 1.6;
+  color: #2D3748;
+}
+
+/* 복지 서비스 목록 */
+.welfare-list h2 {
+  color: #2D3748;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.welfare-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.welfare-card:hover {
+  transform: translateY(-5px);
+}
+
+.welfare-title {
+  font-size: 1.3rem;
+  color: #2D3748;
+  margin-bottom: 10px;
+}
+
+.welfare-category {
+  display: inline-block;
+  background-color: #E2E8F0;
+  color: #4A5568;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+}
+
+.welfare-content {
+  color: #4A5568;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.welfare-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.welfare-target, .welfare-amount {
+  font-size: 0.95rem;
+  color: #718096;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 50px 0;
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .welfare-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

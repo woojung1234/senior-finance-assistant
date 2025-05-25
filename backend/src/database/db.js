@@ -1,45 +1,43 @@
-const mysql = require('mysql2/promise');
+// MongoDB 연결 모듈
+require('dotenv').config();
+const mongoose = require('mongoose');
 const logger = require('../utils/logger');
 
-// 데이터베이스 연결 풀 생성
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'geumbok',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+// MongoDB 연결 URI
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/fitnesscoach';
+
+// MongoDB 연결 옵션
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+
+// MongoDB 연결 함수
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGO_URI, options);
+    logger.info('MongoDB 연결 성공');
+  } catch (error) {
+    logger.error('MongoDB 연결 실패:', error.message);
+    process.exit(1);
+  }
+};
+
+// 연결 이벤트 리스너
+mongoose.connection.on('error', (err) => {
+  logger.error('MongoDB 연결 오류:', err.message);
 });
 
-// 연결 테스트
-const testConnection = async () => {
-  try {
-    const connection = await pool.getConnection();
-    logger.info('데이터베이스 연결 성공');
-    connection.release();
-    return true;
-  } catch (error) {
-    logger.error('데이터베이스 연결 실패:', error.message);
-    return false;
-  }
-};
+mongoose.connection.on('disconnected', () => {
+  logger.warn('MongoDB 연결이 끊어졌습니다. 재연결을 시도합니다.');
+  connectDB();
+});
 
-// 데이터베이스 쿼리 실행 함수
-const query = async (sql, params) => {
-  try {
-    const [results] = await pool.execute(sql, params);
-    return results;
-  } catch (error) {
-    logger.error(`쿼리 실행 오류: ${error.message}`);
-    logger.error(`SQL: ${sql}`);
-    logger.error(`Params: ${JSON.stringify(params)}`);
-    throw error;
-  }
-};
+// 애플리케이션 종료 시 MongoDB 연결 종료
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  logger.info('MongoDB 연결이 종료되었습니다.');
+  process.exit(0);
+});
 
-module.exports = {
-  pool,
-  query,
-  testConnection
-};
+module.exports = { connectDB };

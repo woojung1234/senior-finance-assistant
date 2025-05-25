@@ -11,16 +11,21 @@ const swaggerUi = require('swagger-ui-express');
 // 로거 설정
 const logger = require('./utils/logger');
 
+// MongoDB 연결
+const { connectDB } = require('./database/db');
+
 // 라우터 임포트
 const userRouter = require('./routes/userRoutes');
-const welfareRouter = require('./routes/welfareRoutes');
-const consumptionRouter = require('./routes/consumptionRoutes');
-const notificationRouter = require('./routes/notificationRoutes');
-const chatbotRouter = require('./routes/chatbotRoutes');
-const speechRouter = require('./routes/speechRoutes');
+const workoutRouter = require('./routes/workoutRoutes');
+const scheduleRouter = require('./routes/scheduleRoutes');
+const aiCoachRouter = require('./routes/aiCoachRoutes');
+const healthMetricRouter = require('./routes/healthMetricRoutes');
 
 // Express 앱 생성
 const app = express();
+
+// MongoDB 연결
+connectDB();
 
 // 미들웨어 설정
 app.use(helmet());
@@ -29,7 +34,7 @@ app.use(morgan('combined', { stream: { write: message => logger.info(message.tri
 
 // CORS 설정
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:5173',
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:19000',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -49,9 +54,9 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: '금복(GEUMBOK) API 문서',
+      title: '피트니스 코치(FitnessCoach) API 문서',
       version: '1.0.0',
-      description: '고령자를 위한 음성 기반 금융 도우미 API 문서',
+      description: '맞춤형 헬스 트레이닝 어시스턴트 API 문서',
     },
     servers: [
       {
@@ -67,15 +72,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // 라우터 설정
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/welfare', welfareRouter);
-app.use('/api/v1/consumption', consumptionRouter);
-app.use('/api/v1/notification', notificationRouter);
-app.use('/api/v1/chatbot', chatbotRouter);
-app.use('/api/v1/speech', speechRouter);
+app.use('/api/v1/workouts', workoutRouter);
+app.use('/api/v1/schedule', scheduleRouter);
+app.use('/api/v1/ai-coach', aiCoachRouter);
+app.use('/api/v1/health-metrics', healthMetricRouter);
 
 // 루트 라우트
 app.get('/', (req, res) => {
-  res.json({ message: '금복(GEUMBOK) API 서버에 오신 것을 환영합니다. API 문서는 /api-docs에서 확인하실 수 있습니다.' });
+  res.json({ message: '피트니스 코치(FitnessCoach) API 서버에 오신 것을 환영합니다. API 문서는 /api-docs에서 확인하실 수 있습니다.' });
 });
 
 // 404 에러 핸들러
